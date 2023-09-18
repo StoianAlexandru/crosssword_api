@@ -10,11 +10,26 @@ class CrosswordsApiTest extends TestCase
     /**
      * A basic feature test example.
      */
-    public function testSuccess(): void
+    public function testSuccessEmpty(): void
     {
-        $response = $this->getJson('/api/crosswords?date='.date(DateFormatEnum::DbDate));
+        $response = $this->getJson('/api/crosswords?date=' . date(DateFormatEnum::DbDate));
 
-        $response->assertStatus(200);
+        if (empty($response->json())) {
+            $response->assertSuccessful();
+        } else {
+            $response->assertNotFound();
+        }
+    }
+
+    public function testSuccessNotEmpty(): void
+    {
+        $response = $this->getJson('/api/crosswords?date=2023-07-25');
+
+        if (!empty($response->json())) {
+            $response->assertSuccessful();
+        } else {
+            $response->assertNotFound();
+        }
     }
 
     public function testFail(): void

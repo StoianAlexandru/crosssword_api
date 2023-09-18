@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Enum\CacheEnum;
 use App\Enum\Model\CrosswordDirectionEnum;
 use App\Models\Crossword;
 use Illuminate\Support\Collection;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Cache;
 
 class CrosswordRepository
 {
+
     /**
      * NOTE/TODO Normally would keep static database seeding data in a separate file in the "storage/app/for_deployment" directory
      */
@@ -30,7 +32,7 @@ class CrosswordRepository
 
     public function list(string $date): Collection
     {
-        $returnData = Cache::remember($this->getListCacheKey($date), 3600, fn() => $this->listQuery($date));
+        $returnData = Cache::remember($this->getListCacheKey($date), CacheEnum::TWELVE_HOURS, fn() => $this->listQuery($date));
 
         if ($returnData->isNotEmpty()) {
             return $returnData;
@@ -54,14 +56,14 @@ class CrosswordRepository
             return $returnData;
         }
         foreach (self::RAW_DATA[$date] as $rawEntry) {
-                $returnData->push(Crossword::firstOrCreate([
-                    'answer' => $rawEntry['answer'],
-                    'date' => $rawEntry['date'],
-                    'direction' => $rawEntry['direction'],
-                ], $rawEntry));
+            $returnData->push(Crossword::firstOrCreate([
+                'answer' => $rawEntry['answer'],
+                'date' => $rawEntry['date'],
+                'direction' => $rawEntry['direction'],
+            ], $rawEntry));
         }
 
-        return $returnData->isEmpty() ? $returnData : Cache::remember($this->getListCacheKey($date), 3600, fn() => $returnData);
+        return $returnData->isEmpty() ? $returnData : Cache::remember($this->getListCacheKey($date), CacheEnum::TWELVE_HOURS, fn() => $returnData);
     }
 
     private function getListCacheKey(string $date): string

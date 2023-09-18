@@ -58,7 +58,13 @@ the utility
 Check "/package-lock.js" and "/composer.lock" for dependencies.
 
 ### APPLICATION STARTUP
-- After installing all the tech stack requirements
+After installing all the tech stack requirements:
+- create 2 MySQL databases locally: fly_go_crosswords, fly_go_crosswords_testing
+- configure application project_url and database connections in the .env file
+- run in project root CLI:
+  - "php artisan migrate" and "php artisan --env=testing migrate" and - to create database tables
+  - OPTIONAL! if you don't want to configure nGinx server you can run "php artisan serve" to start up portable server
+- "php artisan test" for PHPUnit route assertion url
 
 ### TESTING
 The Laravel framework comes with build in testing features. For my tests I used a second MySql database "fly_go_crosswords_testing" configured in
