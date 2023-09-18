@@ -2,8 +2,13 @@
 
 namespace App\Enum\Model;
 
-enum CrosswordDirectionEnum
+enum CrosswordDirectionEnum: string
 {
-    case across;
-    case down;
+    case Across = 'across';
+    case Down = 'down';
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
 }

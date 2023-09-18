@@ -4,18 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Repository\CrosswordRepository;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CrosswordController extends Controller
 {
-    public function __construct(private CrosswordRepository $repository)
+    public function __construct(private readonly CrosswordRepository $repository)
     {
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         if (is_null($request->get('date'))) {
             return response()->json([

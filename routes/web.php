@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $url = route('api.crosswords', ['date' => date(App\Enum\DateFormatEnum::DbDate)]);
+    $url = route('api.crosswords', ['date' => '2023-07-25']);
     return "Visit <a href='$url'>$url</a> to get results.";
 });
